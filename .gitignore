@@ -1,8 +1,7 @@
-# JetBrains project files
 .idea
-
-# NPM
 node_modules
-
-# NativeScript application
+template/platforms/ios/template/app/tns_modules
+template/platforms/ios/Pods
+template/node_modules/
+template/platforms/
 /dist
