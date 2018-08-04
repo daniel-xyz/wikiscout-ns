@@ -6,7 +6,7 @@ import store from './store'
 
 import './styles.scss'
 
-//Vue.config.silent = false;
+// Vue.config.silent = false
 
 Vue.registerElement('Mapbox', () => require('nativescript-mapbox').MapboxView)
 

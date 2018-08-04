@@ -4,10 +4,10 @@
     <GridLayout>
       <Mapbox
         :accessToken="config.mapbox.token"
-        latitude="37.7397"
-        longitude="-121.4252"
-        hideCompass="true"
-        zoomLevel="12"
+        :latitude="startLocation.latitude"
+        :longitude="startLocation.longitude"
+        hideCompass="false"
+        zoomLevel="15"
         showUserLocation="true"
         disableZoom="false"
         disableRotation="false"
@@ -23,20 +23,50 @@
 import config from '../../config'
 import wikipedia from '../services/wikipedia'
 import EntryPage from './Entry.vue'
+import { isEnabled, enableLocationRequest, getCurrentLocation } from 'nativescript-geolocation'
 
 export default {
   data() {
     return {
       config,
       markers: [],
+      startLocation: {
+        latitude: 2.3522219,
+        longitude: 48.856614,
+      },
     }
   },
+  created() {
+    this.setStartLocation()
+  },
   methods: {
-    onMapReady(event) {
-      this.loadMarkers(event.map)
+    setStartLocation() {
+      isEnabled().then(enabled => {
+        if (!enabled) {
+          return enableLocationRequest().then(() => {
+            getCurrentLocation().then(location => {
+              this.startLocation = location
+            })
+          })
+        }
+
+        getCurrentLocation().then(location => {
+          this.startLocation = location
+        })
+      })
     },
-    async loadMarkers(map) {
-      const pages = await wikipedia.markers.getInRadius(-121.4252, 37.7397, 5000).then(json => json.query.pages)
+    async onMapReady({ map }) {
+      const { location } = await map.getUserLocation()
+
+      map.trackUser({
+        mode: 'FOLLOW',
+        animated: true,
+      })
+
+      this.loadMarkers(map, location.lat, location.lng)
+    },
+    async loadMarkers(map, lat, lng) {
+      const pages = await wikipedia.markers.getInRadius(lat, lng, 5000).then(json => json.query.pages)
 
       this.markers = [...Object.keys(pages)].map(key => {
         const page = pages[key]

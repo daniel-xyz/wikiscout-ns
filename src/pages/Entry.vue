@@ -3,7 +3,7 @@
     <ActionBar class="action-bar" :title="title"></ActionBar>
     <ScrollView>
       <StackLayout>
-        <Image :src="image.src" stretch="aspectFit" loadMode="sync" />
+        <Image :src="image.src" stretch="aspectFit" />
         <HtmlView :html="htmlView" class="html-view" />
       </StackLayout>
     </ScrollView>
