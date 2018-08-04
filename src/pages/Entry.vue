@@ -1,10 +1,12 @@
 <template>
   <Page class="page">
     <ActionBar class="action-bar" :title="title"></ActionBar>
-    <StackLayout>
-      <Image :src="image.src" stretch="aspectFit" />
-      <HtmlView :html="htmlDescription" />
-    </StackLayout>
+    <ScrollView>
+      <StackLayout>
+        <Image :src="image.src" stretch="aspectFit" loadMode="sync" />
+        <HtmlView :html="htmlView" class="html-view" />
+      </StackLayout>
+    </ScrollView>
   </Page>
 </template>
 
@@ -18,7 +20,7 @@ export default {
         src: '',
         width: '',
       },
-      htmlDescription: '',
+      htmlView: '',
     }
   },
   props: {
@@ -54,8 +56,14 @@ export default {
     }
 
     if (typeof page !== 'undefined') {
-      this.htmlDescription = page.extract
+      this.htmlView = '<font size="4" face="Helvetica">'.concat(page.extract, '</font>')
     }
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.html-view {
+  margin: 8;
+}
+</style>
