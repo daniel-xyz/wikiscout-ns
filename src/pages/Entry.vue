@@ -3,8 +3,8 @@
     <ActionBar class="action-bar" :title="title"></ActionBar>
     <ScrollView>
       <StackLayout>
-        <Image :src="image.src" stretch="aspectFit" />
         <HtmlView :html="htmlView" class="html-view" />
+        <Image :src="image.src" stretch="aspectFit" />
       </StackLayout>
     </ScrollView>
   </Page>
@@ -37,17 +37,11 @@ export default {
     const json = await wikipedia.markers.getByTitle(this.title)
     const page = json.query.pages[this.pageId]
 
-    // console.log(entry.query.pages)
-    console.log(json)
-    console.log(json.query.pages[this.pageId])
-
     if (typeof page.thumbnail !== 'undefined') {
       const thumbnail = page.thumbnail
 
       if (typeof thumbnail.source !== 'undefined') {
         this.image.src = thumbnail.source
-
-        console.log(this.image.src)
       }
 
       if (typeof thumbnail.width !== 'undefined') {
